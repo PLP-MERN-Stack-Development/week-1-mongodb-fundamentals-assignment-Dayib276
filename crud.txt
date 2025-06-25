@@ -1,0 +1,46 @@
+use schoolDB
+db.students.insertMany([
+    {student_id:"S001", name:"Abdi", age: 22, track: "web"},
+    {student_id:"S002", name:"Jane", age: 19, track: "python"},
+    {student_id:"S003", name:"Brian", age: 20, track: "AI"},
+    {student_id:"S004", name:"Wambui", age: 32, track: "Devops"},
+    {student_id:"S005", name:"john", age: 22, track: "MERN"}
+
+])
+// hands on two   enhances student with embedded contacts        //empty filter shows it applies to all if you are targetting a specific you shoulde put inside the curly bracet
+db.students.updateMany({}, {
+    $set : {
+        contact: {email: "example@gmail.com", phone: "0700111222" }
+        emergency: { name: "Parent", relation: "Mother", phone:"0711222000" }
+    }
+})
+// hands on three     :  courses $ mentors with refrencing
+db.mentors.insertMany([
+    {mentor_id:"M001", name:"Kasongo", speciality:"Wantam" },
+    {mentor_id:"M002", name:"RiggyG", speciality:"truthful" },
+    {mentor_id:"M003", name:"Kasongo", speciality:"DevOps" }
+
+])
+
+db.courses.insertMany([
+    {course_id:"CT101", title: "Enviroment and ecology" durations_Weeks: 5, Mnetor_id: "M001"},
+   {course_id:"CT102", title: "Criminoloy" durations_Weeks: 2, Mnetor_id: "M002"},
+    {course_id:"CT103", title: "Social Relations" durations_Weeks: 10, Mnetor_id: "M003"}
+
+])
+// Hands on number Four :  connect everything together with everything (Analyticals)
+db.enrollements.insertMany([
+    {student_id:"S001", course_id:"CT101", status:"in progress", scores:"88"},
+    {student_id:"S002", course_id:"CT102", status:"completed", scores:"92"},
+    {student_id:"S004", course_id:"CT103", status:"in progress", scores:"78"},
+    {student_id:"S005", course_id:"CT104", status:"completed", scores:"85"}
+
+
+])
+
+ 
+aggregation : students per course
+
+db.enrollements.aggregate([
+    {$group: {_id: "$course_id", total_students:{}}}
+])
